@@ -4,8 +4,60 @@
 
 @layer base {
   body {
-    @apply bg-[#f4f6f9] text-slate-800 font-sans;
+    @apply bg-[#f4f6f9] dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-200;
   }
+}
+
+/* Fallback & Automatic Global Dark Mode Styling */
+html.dark {
+  color-scheme: dark;
+  background-color: #020617;
+  color: #f8fafc;
+}
+
+html.dark body {
+  background-color: #020617;
+  color: #f8fafc;
+}
+
+html.dark .bg-white {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+html.dark .bg-slate-50 {
+  background-color: #1e293b;
+  color: #f1f5f9;
+}
+
+html.dark .bg-\[\#f4f6f9\] {
+  background-color: #020617;
+}
+
+html.dark .border-slate-100,
+html.dark .border-slate-200 {
+  border-color: #1e293b;
+}
+
+html.dark .text-slate-800,
+html.dark .text-slate-700 {
+  color: #f1f5f9;
+}
+
+html.dark .text-slate-600 {
+  color: #cbd5e1;
+}
+
+html.dark .text-slate-500 {
+  color: #94a3b8;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border-color: #334155;
 }
 
 /* Custom scrollbar */
@@ -16,15 +68,47 @@
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
+.dark ::-webkit-scrollbar-track {
+  background: #0f172a;
+}
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
 
 /* Card hover animation */
 .kuber-card {
-  @apply bg-white rounded-xl border border-slate-100 shadow-sm transition-all duration-200 hover:shadow-md;
+  @apply bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800/80 shadow-sm transition-all duration-200 hover:shadow-md;
+}
+
+/* Smooth Dropdown Transitions */
+@keyframes dropdownSmooth {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-dropdown {
+  animation: dropdownSmooth 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top right;
+}
+
+.animate-dropdown-down {
+  animation: dropdownSmooth 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top center;
 }

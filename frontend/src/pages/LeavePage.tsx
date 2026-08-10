@@ -15,11 +15,20 @@ export const LeavePage: React.FC = () => {
   const [endDate, setEndDate] = useState('');
   const [reason, setReason] = useState('');
 
+  const [toastMessage, setToastMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
   const isHR = user?.role === 'SUPER_ADMIN' || user?.role.includes('HR');
 
   useEffect(() => {
     fetchLeaves();
   }, [user]);
+
+  const showToast = (text: string, type: 'success' | 'error' = 'success') => {
+    setToastMessage({ text, type });
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 4000);
+  };
 
   const fetchLeaves = () => {
     if (isHR) {
@@ -29,22 +38,69 @@ export const LeavePage: React.FC = () => {
     }
   };
 
+  const canApproveLeave = (leaveItem: LeaveRequest): { allowed: boolean; reason?: string } => {
+    if (!user) return { allowed: false, reason: 'Not authenticated' };
+
+    const isSuperAdmin = user.role === 'SUPER_ADMIN';
+    const isHRRole = user.role.includes('HR');
+
+    // Super Admin has full authority to approve any leave request
+    if (isSuperAdmin) {
+      return { allowed: true };
+    }
+
+    if (!isHRRole) {
+      return { allowed: false, reason: 'Requires HR or Super Admin role' };
+    }
+
+    // HR users cannot approve their own self-applied leave request
+    const isSelf =
+      leaveItem.employee?.id === user.id ||
+      leaveItem.employee?.user?.id === user.id ||
+      leaveItem.employee?.user?.email === user.email;
+
+    if (isSelf) {
+      return { allowed: false, reason: 'Self-approval not permitted (Requires Super Admin)' };
+    }
+
+    return { allowed: true };
+  };
+
   const handleApply = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    let totalDays = 1;
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diffTime = Math.abs(end.getTime() - start.getTime());
+      totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    }
+
     await leaveService.apply({
       employeeId: user?.id || 4,
       leaveType,
       startDate,
       endDate,
-      totalDays: 2,
+      totalDays,
       reason,
     });
+
+    setStartDate('');
+    setEndDate('');
+    setReason('');
     setShowApplyModal(false);
+    showToast('Leave application submitted successfully!', 'success');
     fetchLeaves();
   };
 
   const handleAction = async (id: number, status: 'APPROVED' | 'REJECTED') => {
     await leaveService.updateStatus(id, status, user?.fullName || 'HR Admin', 'Processed via Leave Portal');
+    if (status === 'APPROVED') {
+      showToast('Leave request approved successfully!', 'success');
+    } else {
+      showToast('Leave request has been rejected.', 'error');
+    }
     fetchLeaves();
   };
 
@@ -57,6 +113,25 @@ export const LeavePage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Toast Alert Message Banner */}
+      {toastMessage && (
+        <div className={`p-4 rounded-xl flex items-center justify-between border shadow-lg transition-all duration-300 text-xs font-semibold ${
+          toastMessage.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-rose-50 text-rose-800 border-rose-200'
+        }`}>
+          <div className="flex items-center gap-2.5">
+            {toastMessage.type === 'success' ? (
+              <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+            ) : (
+              <XCircle className="w-5 h-5 text-rose-600 shrink-0" />
+            )}
+            <span className="text-xs font-bold">{toastMessage.text}</span>
+          </div>
+          <button onClick={() => setToastMessage(null)} className="p-1 hover:bg-black/5 rounded text-slate-400 hover:text-slate-700">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -167,20 +242,34 @@ export const LeavePage: React.FC = () => {
                     {isHR && (
                       <td className="py-3 px-4 text-right">
                         {item.status === 'PENDING' ? (
-                          <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              onClick={() => handleAction(item.id, 'APPROVED')}
-                              className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold text-[10px] flex items-center gap-1"
-                            >
-                              <CheckCircle className="w-3 h-3" /> Approve
-                            </button>
-                            <button
-                              onClick={() => handleAction(item.id, 'REJECTED')}
-                              className="px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg font-semibold text-[10px]"
-                            >
-                              Reject
-                            </button>
-                          </div>
+                          (() => {
+                            const check = canApproveLeave(item);
+                            if (check.allowed) {
+                              return (
+                                <div className="flex items-center justify-end gap-1.5">
+                                  <button
+                                    onClick={() => handleAction(item.id, 'APPROVED')}
+                                    className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold text-[10px] flex items-center gap-1 shadow-xs transition"
+                                  >
+                                    <CheckCircle className="w-3 h-3" /> Approve
+                                  </button>
+                                  <button
+                                    onClick={() => handleAction(item.id, 'REJECTED')}
+                                    className="px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg font-semibold text-[10px] transition"
+                                  >
+                                    Reject
+                                  </button>
+                                </div>
+                              );
+                            } else {
+                              return (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200/80 rounded-lg text-[10px] font-semibold">
+                                  <Info className="w-3 h-3 text-amber-500 shrink-0" />
+                                  {check.reason}
+                                </span>
+                              );
+                            }
+                          })()
                         ) : (
                           <span className="text-[11px] text-slate-400">Decision Finalized</span>
                         )}

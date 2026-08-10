@@ -107,3 +107,6 @@ Demo data is seeded automatically on first boot. All accounts use the password `
 | Employee    | employee@ems.com      |
 
 > Note: The H2 in-memory database is used by default. To use PostgreSQL, update the datasource settings in `backend/src/main/resources/application.yml`.
+> 
+> [EMS-DEMO (1).mp4](../../../Downloads/EMS-DEMO%20%281%29.mp4)
+> 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Layout } from './components/Layout';
 
 import { LoginPage } from './pages/LoginPage';
@@ -24,96 +25,98 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 export const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
 
-          <Route
-            path="/dashboard/admin"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/dashboard/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/dashboard/hr"
-            element={
-              <ProtectedRoute>
-                <HRDashboard />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/dashboard/hr"
+              element={
+                <ProtectedRoute>
+                  <HRDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/dashboard/employee"
-            element={
-              <ProtectedRoute>
-                <EmployeeDashboard />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/dashboard/employee"
+              element={
+                <ProtectedRoute>
+                  <EmployeeDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/employees"
-            element={
-              <ProtectedRoute>
-                <EmployeeManagementPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/employees"
+              element={
+                <ProtectedRoute>
+                  <EmployeeManagementPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/employees/:id"
-            element={
-              <ProtectedRoute>
-                <EmployeeProfilePage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/employees/:id"
+              element={
+                <ProtectedRoute>
+                  <EmployeeProfilePage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/attendance"
-            element={
-              <ProtectedRoute>
-                <AttendancePage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/attendance"
+              element={
+                <ProtectedRoute>
+                  <AttendancePage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/leaves"
-            element={
-              <ProtectedRoute>
-                <LeavePage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/leaves"
+              element={
+                <ProtectedRoute>
+                  <LeavePage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/payroll"
-            element={
-              <ProtectedRoute>
-                <PayrollPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/payroll"
+              element={
+                <ProtectedRoute>
+                  <PayrollPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/notifications"
-            element={
-              <ProtectedRoute>
-                <NotificationPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/notifications"
+              element={
+                <ProtectedRoute>
+                  <NotificationPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route path="*" element={<Navigate to="/dashboard/admin" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            <Route path="*" element={<Navigate to="/dashboard/admin" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 

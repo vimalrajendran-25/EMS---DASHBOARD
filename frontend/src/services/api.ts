@@ -146,7 +146,10 @@ export const leaveService = {
       const res = await api.get(`/leaves/employee/${employeeId}`);
       return res.data;
     } catch {
-      return getMockLeaveRequests();
+      const allLeaves = getMockLeaveRequests();
+      return allLeaves.filter(
+        (l) => l.employee?.id === employeeId || l.employee?.user?.id === employeeId
+      );
     }
   },
   apply: async (data: any): Promise<LeaveRequest> => {
@@ -154,7 +157,25 @@ export const leaveService = {
       const res = await api.post('/leaves', data);
       return res.data;
     } catch {
-      return getMockLeaveRequests()[0];
+      const store = getMockLeaveRequests();
+      const emp =
+        getMockEmployees().find(
+          (e) => e.id === data.employeeId || e.user?.id === data.employeeId
+        ) || getMockEmployees()[3];
+
+      const newLeave: LeaveRequest = {
+        id: Date.now(),
+        employee: emp,
+        leaveType: data.leaveType || 'CASUAL',
+        startDate: data.startDate,
+        endDate: data.endDate,
+        totalDays: data.totalDays || 1,
+        reason: data.reason || '',
+        status: 'PENDING',
+        createdAt: new Date().toISOString(),
+      };
+      store.unshift(newLeave);
+      return newLeave;
     }
   },
   updateStatus: async (id: number, status: string, approvedBy: string, comments: string): Promise<LeaveRequest> => {
@@ -162,9 +183,15 @@ export const leaveService = {
       const res = await api.patch(`/leaves/${id}/status`, { status, approvedBy, comments });
       return res.data;
     } catch {
-      const list = getMockLeaveRequests();
-      list[0].status = status as any;
-      return list[0];
+      const store = getMockLeaveRequests();
+      const target = store.find((l) => l.id === id);
+      if (target) {
+        target.status = status as any;
+        target.approvedBy = approvedBy;
+        target.adminComments = comments;
+        return target;
+      }
+      return store[0];
     }
   },
 };
@@ -224,8 +251,9 @@ export const dashboardService = {
       const res = await api.get('/dashboard/hr');
       return res.data;
     } catch {
+      const pendingCount = getMockLeaveRequests().filter((l) => l.status === 'PENDING').length;
       return {
-        pendingLeaves: 3,
+        pendingLeaves: pendingCount,
         newJoinersThisMonth: 5,
         pendingExits: 1,
         upcomingInterviews: 4,
@@ -383,33 +411,38 @@ function getMockAttendance(): Attendance[] {
   ];
 }
 
+let mockLeaveRequestsStore: LeaveRequest[] | null = null;
+
 function getMockLeaveRequests(): LeaveRequest[] {
-  return [
-    {
-      id: 1,
-      employee: getMockEmployees()[3],
-      leaveType: 'CASUAL',
-      startDate: '2026-08-15',
-      endDate: '2026-08-16',
-      totalDays: 2,
-      reason: 'Personal work & family visit',
-      status: 'PENDING',
-      createdAt: '2026-08-10T10:00:00',
-    },
-    {
-      id: 2,
-      employee: getMockEmployees()[1],
-      leaveType: 'EARNED',
-      startDate: '2026-07-20',
-      endDate: '2026-07-23',
-      totalDays: 4,
-      reason: 'Summer vacation trip',
-      status: 'APPROVED',
-      approvedBy: 'Alexander Wright',
-      adminComments: 'Approved.',
-      createdAt: '2026-07-15T09:30:00',
-    },
-  ];
+  if (!mockLeaveRequestsStore) {
+    mockLeaveRequestsStore = [
+      {
+        id: 1,
+        employee: getMockEmployees()[3],
+        leaveType: 'CASUAL',
+        startDate: '2026-08-15',
+        endDate: '2026-08-16',
+        totalDays: 2,
+        reason: 'Personal work & family visit',
+        status: 'PENDING',
+        createdAt: '2026-08-10T10:00:00',
+      },
+      {
+        id: 2,
+        employee: getMockEmployees()[1],
+        leaveType: 'EARNED',
+        startDate: '2026-07-20',
+        endDate: '2026-07-23',
+        totalDays: 4,
+        reason: 'Summer vacation trip',
+        status: 'APPROVED',
+        approvedBy: 'Alexander Wright',
+        adminComments: 'Approved.',
+        createdAt: '2026-07-15T09:30:00',
+      },
+    ];
+  }
+  return mockLeaveRequestsStore;
 }
 
 function getMockPayroll(): Payroll[] {
@@ -442,9 +475,9 @@ function getMockNotifications(): NotificationItem[] {
     {
       id: 1,
       title: 'Welcome to EMS Portal',
-      message: 'Your Enterprise EMS Portal is up and running. Explore your dashboard and modules.',
+      message: 'Your EMS Portal is up and running. Explore your dashboard and modules.',
       category: 'SYSTEM',
-      isRead: false,
+      isRead: true,
       timestamp: '2026-08-10T12:00:00',
     },
     {
@@ -452,7 +485,7 @@ function getMockNotifications(): NotificationItem[] {
       title: 'Leave Request Received',
       message: 'Priya Sharma applied for Casual Leave (2 days).',
       category: 'LEAVE',
-      isRead: false,
+      isRead: true,
       timestamp: '2026-08-10T10:05:00',
     },
   ];

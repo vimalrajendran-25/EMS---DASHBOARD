@@ -124,23 +124,23 @@ export const EmployeeDashboard: React.FC = () => {
 
       {/* Row 1: Leave Balance Breakdown */}
       <div>
-        <h3 className="font-bold text-slate-800 text-sm mb-3">Leave Balance Summary (2026)</h3>
+        <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm mb-3">Leave Balance Summary (2026)</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="kuber-card p-4 border-l-4 border-l-brand-500">
-            <p className="text-xs text-slate-400 font-semibold">Casual Leave (CL)</p>
-            <h4 className="text-xl font-bold text-slate-800 mt-1">10 <span className="text-xs font-normal text-slate-400">/ 12 remaining</span></h4>
+            <p className="text-xs text-slate-400 dark:text-slate-500 font-semibold">Casual Leave (CL)</p>
+            <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">10 <span className="text-xs font-normal text-slate-400 dark:text-slate-500">/ 12 remaining</span></h4>
           </div>
           <div className="kuber-card p-4 border-l-4 border-l-emerald-500">
-            <p className="text-xs text-slate-400 font-semibold">Sick Leave (SL)</p>
-            <h4 className="text-xl font-bold text-slate-800 mt-1">7 <span className="text-xs font-normal text-slate-400">/ 8 remaining</span></h4>
+            <p className="text-xs text-slate-400 dark:text-slate-500 font-semibold">Sick Leave (SL)</p>
+            <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">7 <span className="text-xs font-normal text-slate-400 dark:text-slate-500">/ 8 remaining</span></h4>
           </div>
           <div className="kuber-card p-4 border-l-4 border-l-indigo-500">
-            <p className="text-xs text-slate-400 font-semibold">Earned Leave (EL)</p>
-            <h4 className="text-xl font-bold text-slate-800 mt-1">14 <span className="text-xs font-normal text-slate-400">/ 15 remaining</span></h4>
+            <p className="text-xs text-slate-400 dark:text-slate-500 font-semibold">Earned Leave (EL)</p>
+            <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">14 <span className="text-xs font-normal text-slate-400 dark:text-slate-500">/ 15 remaining</span></h4>
           </div>
           <div className="kuber-card p-4 border-l-4 border-l-amber-500">
-            <p className="text-xs text-slate-400 font-semibold">Comp-Off Balance</p>
-            <h4 className="text-xl font-bold text-slate-800 mt-1">2 <span className="text-xs font-normal text-slate-400">Days available</span></h4>
+            <p className="text-xs text-slate-400 dark:text-slate-500 font-semibold">Comp-Off Balance</p>
+            <h4 className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">2 <span className="text-xs font-normal text-slate-400 dark:text-slate-500">Days available</span></h4>
           </div>
         </div>
       </div>
@@ -150,24 +150,24 @@ export const EmployeeDashboard: React.FC = () => {
         {/* Sprint Tasks */}
         <div className="kuber-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <CheckSquare className="w-4 h-4 text-brand-600" />
-            <h3 className="font-bold text-slate-800 text-sm">Sprint Tasks & Deliverables</h3>
+            <CheckSquare className="w-4 h-4 text-brand-600 dark:text-brand-400" />
+            <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm">Sprint Tasks & Deliverables</h3>
           </div>
 
           <div className="space-y-2.5">
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs">
+            <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
               <div>
-                <p className="font-bold text-slate-800">Refactor Auth Middleware</p>
-                <p className="text-[11px] text-slate-400">Sprint 14 • Due Tomorrow</p>
+                <p className="font-bold text-slate-800 dark:text-slate-200">Refactor Auth Middleware</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500">Sprint 14 • Due Tomorrow</p>
               </div>
-              <span className="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-bold rounded">In Progress</span>
+              <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-[10px] font-bold rounded">In Progress</span>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs">
+            <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
               <div>
-                <p className="font-bold text-slate-800">Spring Boot API Docs Swagger</p>
-                <p className="text-[11px] text-slate-400">Sprint 14 • Completed</p>
+                <p className="font-bold text-slate-800 dark:text-slate-200">Spring Boot API Docs Swagger</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500">Sprint 14 • Completed</p>
               </div>
-              <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded">Done</span>
+              <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold rounded">Done</span>
             </div>
           </div>
         </div>
@@ -176,14 +176,14 @@ export const EmployeeDashboard: React.FC = () => {
         <div className="kuber-card p-5">
           <div className="flex items-center gap-2 mb-3">
             <Megaphone className="w-4 h-4 text-amber-500" />
-            <h3 className="font-bold text-slate-800 text-sm">Company Announcements</h3>
+            <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm">Company Announcements</h3>
           </div>
 
           <div className="space-y-3 text-xs">
-            <div className="p-3 bg-amber-50/60 border border-amber-100 rounded-xl">
-              <h4 className="font-bold text-slate-800">Independence Day Holiday Notice</h4>
-              <p className="text-slate-600 mt-1">The office will remain closed on August 15th, 2026. Happy Independence Day!</p>
-              <p className="text-[10px] text-amber-700 mt-2 font-semibold">Posted by HR Team</p>
+            <div className="p-3 bg-amber-50/60 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50 rounded-xl">
+              <h4 className="font-bold text-slate-800 dark:text-slate-200">Independence Day Holiday Notice</h4>
+              <p className="text-slate-600 dark:text-slate-400 mt-1">The office will remain closed on August 15th, 2026. Happy Independence Day!</p>
+              <p className="text-[10px] text-amber-700 dark:text-amber-400 mt-2 font-semibold">Posted by HR Team</p>
             </div>
           </div>
         </div>
@@ -191,27 +191,27 @@ export const EmployeeDashboard: React.FC = () => {
         {/* Assets & KPI Progress */}
         <div className="kuber-card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <Laptop className="w-4 h-4 text-indigo-600" />
-            <h3 className="font-bold text-slate-800 text-sm">Assigned Assets & Equipment</h3>
+            <Laptop className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+            <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm">Assigned Assets & Equipment</h3>
           </div>
 
           <div className="space-y-2 text-xs">
-            <div className="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg">
-              <span className="font-semibold text-slate-700">MacBook Pro 16" M3 Max</span>
-              <span className="text-[10px] font-mono bg-slate-200 px-1.5 py-0.5 rounded text-slate-800">AST-8921</span>
+            <div className="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg">
+              <span className="font-semibold text-slate-700 dark:text-slate-300">MacBook Pro 16" M3 Max</span>
+              <span className="text-[10px] font-mono bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-800 dark:text-slate-200">AST-8921</span>
             </div>
-            <div className="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg">
-              <span className="font-semibold text-slate-700">Dell UltraSharp 27" Monitor</span>
-              <span className="text-[10px] font-mono bg-slate-200 px-1.5 py-0.5 rounded text-slate-800">AST-4412</span>
+            <div className="flex items-center justify-between p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg">
+              <span className="font-semibold text-slate-700 dark:text-slate-300">Dell UltraSharp 27" Monitor</span>
+              <span className="text-[10px] font-mono bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-slate-800 dark:text-slate-200">AST-4412</span>
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-100">
+          <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800">
             <div className="flex justify-between items-center text-xs mb-1">
-              <span className="font-bold text-slate-800">Q3 Performance KPI Goal</span>
-              <span className="text-brand-600 font-bold">92%</span>
+              <span className="font-bold text-slate-800 dark:text-slate-100">Q3 Performance KPI Goal</span>
+              <span className="text-brand-600 dark:text-brand-400 font-bold">92%</span>
             </div>
-            <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <div className="h-full bg-brand-600 rounded-full w-[92%]"></div>
             </div>
           </div>
